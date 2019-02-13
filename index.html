@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<!--Author: John Westbrooks Assignment: Homework 3 "The Psychic Game"-->
+<head>
+  <meta charset="UTF-8">
+  <title>The Psychic Game</title>
+</head>
+
+<body>
+
+  <div id="game">
+    <h1>The Psychic Game</h1>
+    <br/>
+    <p>Guess what letter I'm thinking of...</p>
+      <p id="win">Wins: </p>
+      <p id="lose"> Losses: </p>
+      <p id="numGuess"></p>
+      <p id="guessSo"></p>
+  </div>
+
+
+  <script type="text/javascript">
+
+    // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
+    var alphabetDS = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    var i = 0; //win counter
+    var j = 0; //loss counter
+    var nmGs = 9; //# of guesses
+    var cnctGss = "";  //concatenated guesses - holds the user's guesses concat'd
+    var crrctGss = ""; //the computer's choice
+
+    function intialize()
+    {
+        crrctGss = alphabetDS[Math.floor(Math.random() * alphabetDS.length)];
+        cnctGss = ""; //string to hold all of a user's guess in one var
+        nmGs = 9; 
+        var elem = document.getElementById("numGuess");
+        elem.innerHTML = "Number of guesses left: " + nmGs; 
+        var elemTwo = document.getElementById("guessSo");
+        elemTwo.innerHTML = "Guesses so far...";
+    }
+
+    function win( )
+    {
+        i++;
+        var elem = document.getElementById("win");
+        elem.innerHTML = "Wins: " + i; //update game board
+        intialize(); //restart game
+    }
+
+    function lose( )
+    {
+        j++;
+        var elem = document.getElementById("lose"); 
+        elem.innerHTML = "Losses: " + j; //update game board
+        intialize(); //restart game
+    }
+
+    //start event listener
+    document.onkeyup = function(event)
+    {
+
+      // Determines, and stores, which key was pressed.
+      var userGuess = event.key;
+
+      for(var l = 0; l < alphabetDS.length; l++) //loop through alphabet data structure to validate user input
+      {                                          //did not use a foreach loop because it is unbreakable 
+        if(userGuess == alphabetDS[l])
+        {
+          break; //exit loop - user made a valid choice
+        }
+        else if((l + 1 ) == alphabetDS.length) //user made an incorrect choice 
+        {
+            alert("Please choose only a lower case letter for this game.");
+            return; //exit function
+        }
+      }
+
+      //Store the user guesses into one string
+      cnctGss = cnctGss + userGuess + " ";
+
+      if(userGuess === crrctGss) //user has won
+      {
+          win(); //call win function
+      }
+      else if ( nmGs != 1) //user made an incorrect guess
+      {
+          nmGs = nmGs - 1;
+          var elem = document.getElementById("numGuess");
+          elem.innerHTML = "Number of guesses left: " + nmGs; //update the number of guesses left
+          var elemTwo = document.getElementById("guessSo");
+          elemTwo.innerHTML = "Guesses so far... " + cnctGss; //update which letters have been guessed so far
+          alert("Try Again!");
+      }
+      else 
+      {
+          lose(); //call the lose function
+      }
+    }//end function onkey Up
+    //call intialize function to set page up for the game
+    intialize();
+  </script>
+
+</body>
+
+</html>
